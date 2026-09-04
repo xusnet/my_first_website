@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  /* —— DESIGN.md · colors —— */
+  --color-primary: #cc785c;
+  --color-primary-active: #a9583e;
+  --color-primary-disabled: #e6dfd8;
+  --color-ink: #141413;
+  --color-body: #3d3d3a;
+  --color-body-strong: #252523;
+  --color-muted: #6c6a64;
+  --color-muted-soft: #8e8b82;
+  --color-hairline: #e6dfd8;
+  --color-hairline-soft: #ebe6df;
+  --color-canvas: #faf9f5;
+  --color-surface-soft: #f5f0e8;
+  --color-surface-card: #efe9de;
+  --color-surface-cream-strong: #e8e0d2;
+  --color-surface-dark: #181715;
+  --color-surface-dark-elevated: #252320;
+  --color-surface-dark-soft: #1f1e1b;
+  --color-on-primary: #ffffff;
+  --color-on-dark: #faf9f5;
+  --color-on-dark-soft: #a09d96;
+  --color-accent-teal: #5db8a6;
+  --color-accent-amber: #e8a55a;
+  --color-success: #5db872;
+  --color-warning: #d4a017;
+  --color-error: #c64545;
+
+  /* —— DESIGN.md · typography —— */
+  --font-display: "Cormorant Garamond", "Tiempos Headline", Garamond, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-canvas text-body font-sans antialiased;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  }
+}
+
+/* display 字号体系（DESIGN.md · typography.display-*） */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+}
+@utility display-lg {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+@utility display-md {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+@utility display-sm {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+
+@media (max-width: 767px) {
+  .display-xl { font-size: 32px; letter-spacing: -0.5px; }
+  .display-lg { font-size: 28px; }
+  .display-md { font-size: 24px; }
+  .display-sm { font-size: 22px; }
+}
+
+/* 博客文章排版（Markdown 渲染） */
+.prose-blog {
+  color: var(--color-body);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.prose-blog > * + * { margin-top: 1.25em; }
+.prose-blog h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  color: var(--color-ink);
+}
+.prose-blog h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  color: var(--color-ink);
+  margin-top: 2em;
+}
+.prose-blog h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 1.75em;
+}
+.prose-blog a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-blog strong { color: var(--color-body-strong); font-weight: 600; }
+.prose-blog ul { list-style: disc; padding-left: 1.5em; }
+.prose-blog ol { list-style: decimal; padding-left: 1.5em; }
+.prose-blog li { margin-top: 0.4em; }
+.prose-blog blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1.25em;
+  color: var(--color-muted);
+  font-style: italic;
+}
+.prose-blog code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+.prose-blog pre {
+  background: var(--color-surface-dark);
+  color: var(--color-on-dark);
+  padding: 1.25em 1.5em;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.prose-blog pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+.prose-blog hr {
+  border: none;
+  border-top: 1px solid var(--color-hairline);
+  margin: 2.5em 0;
+}
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.prose-blog th, .prose-blog td {
+  border: 1px solid var(--color-hairline);
+  padding: 0.6em 0.9em;
+  text-align: left;
+}
+.prose-blog th { background: var(--color-surface-soft); color: var(--color-ink); font-weight: 600; }
+.prose-blog img { border-radius: 12px; max-width: 100%; }
