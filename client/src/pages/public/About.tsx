@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useSiteInfo } from '../../lib/site'
 import { SpikeMark } from '../../components/SpikeMark'
+import { Markdown } from '../../components/Markdown'
 
 export function AboutPage() {
   const site = useSiteInfo()
+  const aboutContent = (site['about.content'] || '').trim()
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
       <div className="flex items-center gap-4">
@@ -21,7 +23,11 @@ export function AboutPage() {
       </div>
 
       <div className="mt-10 rounded-lg border border-hairline bg-canvas p-8">
-        <p className="leading-relaxed text-body">{site['site.description']}</p>
+        {aboutContent ? (
+          <Markdown content={aboutContent} />
+        ) : (
+          <p className="leading-relaxed text-body">{site['site.description']}</p>
+        )}
       </div>
 
       <div className="mt-12 flex flex-wrap gap-3">

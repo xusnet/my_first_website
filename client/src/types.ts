@@ -9,6 +9,7 @@ export interface SiteInfo {
   'site.social.email': string
   'site.footer': string
   'site.admin_notice': string
+  'about.content': string
   [key: string]: string
 }
 

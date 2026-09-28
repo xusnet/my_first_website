@@ -20,7 +20,18 @@ async function getSiteSettings(): Promise<Record<string, string>> {
   return map
 }
 
-const siteSchema = z.record(z.string(), z.string().max(2000))
+const SITE_VALUE_MAX = 2000
+const SITE_LONG_KEYS = new Set(['about.content'])
+const SITE_LONG_VALUE_MAX = 50000
+const siteSchema = z
+  .record(z.string(), z.string().max(SITE_LONG_VALUE_MAX))
+  .superRefine((val, ctx) => {
+    for (const [key, value] of Object.entries(val)) {
+      if (!SITE_LONG_KEYS.has(key) && value.length > SITE_VALUE_MAX) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `配置项 ${key} 超过 ${SITE_VALUE_MAX} 字符`, path: [key] })
+      }
+    }
+  })
 
 export const settingsRouter = Router()
 

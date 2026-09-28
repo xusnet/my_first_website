@@ -13,6 +13,7 @@ export const DEFAULT_SITE: SiteInfo = {
   'site.social.email': '',
   'site.footer': '© 2026 Clark.Gong · 让每一次提问都值得认真思考',
   'site.admin_notice': '',
+  'about.content': '',
 }
 
 export function useSiteInfo(): SiteInfo {

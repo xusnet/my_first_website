@@ -84,6 +84,12 @@ export function Settings() {
             <div className="md:col-span-2">
               <Field label="站点描述"><textarea className={`${inputCls} h-20 resize-none`} value={site['site.description']} onChange={(e) => setSite({ ...site, 'site.description': e.target.value })} /></Field>
             </div>
+            <div className="md:col-span-2">
+              <Field label={`关于页正文（Markdown，留空则显示站点描述）`}>
+                <textarea className={`${inputCls} h-40 resize-y`} value={site['about.content'] ?? ''} onChange={(e) => setSite({ ...site, 'about.content': e.target.value })} />
+              </Field>
+              <p className="mt-1 text-xs text-muted">支持标题、列表、引用、链接等 Markdown 语法，渲染效果见前台 /about。</p>
+            </div>
             <Field label="GitHub"><input className={inputCls} value={site['site.social.github']} onChange={(e) => setSite({ ...site, 'site.social.github': e.target.value })} /></Field>
             <Field label="Twitter / X"><input className={inputCls} value={site['site.social.twitter']} onChange={(e) => setSite({ ...site, 'site.social.twitter': e.target.value })} /></Field>
             <Field label="联系邮箱"><input className={inputCls} value={site['site.social.email']} onChange={(e) => setSite({ ...site, 'site.social.email': e.target.value })} /></Field>
