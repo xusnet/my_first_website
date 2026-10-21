@@ -45,6 +45,18 @@ RUN mkdir -p /var/lib/mysql /run/mysqld /var/log/mysql \
 COPY .oss-scanner/oss-entrypoint.sh /usr/local/bin/oss-entrypoint
 RUN chmod +x /usr/local/bin/oss-entrypoint
 
+# OSS Scanner 的工具层在最后执行 `ENTRYPOINT []`，会把本镜像的 ENTRYPOINT 清空，
+# 只留下 `CMD ["bash"]`。那样一来进入容器时 MariaDB 与 Redis 都不会启动。
+# 所以把同一套拉起逻辑同时挂到 shell 的启动路径上：无论以 ENTRYPOINT、
+# 还是以交互式 bash 进入，依赖都已经就绪。
+RUN printf '%s\n' \
+      'if [ -x /usr/local/bin/oss-entrypoint ]; then' \
+      '  /usr/local/bin/oss-entrypoint true >/tmp/oss-env.log 2>&1 || echo "[oss] 环境启动失败，详见 /tmp/oss-env.log"' \
+      'fi' \
+      > /etc/profile.d/oss-env.sh \
+ && chmod 644 /etc/profile.d/oss-env.sh \
+ && printf '\n# 拉起 OSS Scanner 所需的本地依赖\n[ -r /etc/profile.d/oss-env.sh ] && . /etc/profile.d/oss-env.sh\n' >> /root/.bashrc
+
 # 暴露应用端口，便于进入容器后直接访问
 EXPOSE 3001 5173 3306 6379
 

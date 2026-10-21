@@ -73,8 +73,14 @@ Trust boundaries worth noting:
 
 ## How to exercise it
 
-The image is set up so MariaDB and Redis start automatically on container start,
-the `clarkgong` database exists, and the schema has been migrated.
+The image brings MariaDB and Redis up, creates the `clarkgong` database and runs the
+schema migration. This is wired to two entry points on purpose: the image's own
+`ENTRYPOINT` (used by a plain `docker run <image>`) and a shell startup file
+(`/etc/profile.d/oss-env.sh`, sourced from `/root/.bashrc`), because the scanner's
+tool layer ends with `ENTRYPOINT []` and only leaves `CMD ["bash"]` behind. If you
+ever land in a shell where the services are not running, execute
+`/usr/local/bin/oss-entrypoint true` or `. /etc/profile.d/oss-env.sh`; the startup is
+idempotent and logs to `/tmp/oss-env.log`.
 
 ```
 # backend, development mode (hot reload, tsx)
