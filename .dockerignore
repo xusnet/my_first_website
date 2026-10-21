@@ -1,0 +1,22 @@
+# 构建上下文裁剪：仓库里不应包含这些（OSS Scanner 拿到的 checkout 本来也没有）
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+.git/
+.gitignore
+*.log
+**/*.log
+.DS_Store
+**/*.tsbuildinfo
+.env
+**/.env
+*.local
+**/*.local
+
+# 本地备份与临时产物
+.hermes/
+*.bundle
+*.tar.gz
