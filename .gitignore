@@ -4,3 +4,6 @@ dist/
 .DS_Store
 .env
 *.tsbuildinfo
+
+# 内部合规文档，不随仓库公开
+docs/MLPS-L3.md

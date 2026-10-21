@@ -8,7 +8,7 @@
 
 - **公开博客**：文章列表 / 详情（Markdown 渲染）/ 分类 / 标签 / 关于页，暖色编辑风设计（`DESIGN.md`）。
 - **CMS 后台**（`/admin`）：用户管理、角色管理、权限管理、内容管理（文章/分类/标签）、用户与站点设置、审计日志。
-- **安全设计**：基于等保三级要求——复杂口令策略、首次登录强制改密、登录失败锁定、RBAC、哈希链防篡改审计日志。合规映射见 `docs/MLPS-L3.md`。
+- **安全设计**：基于等保三级要求——复杂口令策略、首次登录强制改密、登录失败锁定、RBAC、哈希链防篡改审计日志。
 
 ## 目录结构
 
@@ -39,7 +39,6 @@ client/                  Vite + React 19 + Tailwind 4 + react-router v7
   src/admin/             Login/ChangePassword/AdminLayout/Dashboard/Users/Roles/
                          Permissions/Posts/PostEditor/CategoriesTags/Settings/AuditLogs
 DESIGN.md                设计系统规范（色彩/字体/组件 token）
-docs/MLPS-L3.md          等保三级合规映射
 ```
 
 ## 常用命令
