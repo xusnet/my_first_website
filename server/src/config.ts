@@ -1,5 +1,8 @@
 import 'dotenv/config'
 
+const nodeEnv = process.env.NODE_ENV ?? 'development'
+const isProd = nodeEnv === 'production'
+
 function bool(v: string | undefined, d = false): boolean {
   if (v === undefined) return d
   return v === 'true' || v === '1'
@@ -10,10 +13,29 @@ function num(v: string | undefined, d: number): number {
   return Number.isFinite(n) ? n : d
 }
 
+/**
+ * 读取必填的敏感配置（密钥、口令、pepper）。
+ *
+ * 生产环境（NODE_ENV=production）缺失或为空时直接抛错拒绝启动，
+ * 避免部署时漏配环境变量而静默使用弱默认值。
+ * 开发/测试环境回退到占位值，仅为便于本地起服务，不具备任何安全性。
+ */
+function secret(name: string, devFallback: string): string {
+  const v = process.env[name]
+  if (v !== undefined && v.trim() !== '') return v
+  if (isProd) {
+    throw new Error(
+      `[config] 生产环境缺少必需的环境变量 ${name}。` +
+        '请在部署环境中显式设置，不允许回退到默认值。',
+    )
+  }
+  return devFallback
+}
+
 export const config = {
-  nodeEnv: process.env.NODE_ENV ?? 'development',
+  nodeEnv,
   port: num(process.env.PORT, 3001),
-  isProd: (process.env.NODE_ENV ?? 'development') === 'production',
+  isProd,
 
   db: {
     host: process.env.DB_HOST ?? '127.0.0.1',
@@ -30,17 +52,17 @@ export const config = {
   },
 
   jwt: {
-    accessSecret: process.env.JWT_ACCESS_SECRET ?? 'dev-access-secret-change-me',
-    refreshSecret: process.env.JWT_REFRESH_SECRET ?? 'dev-refresh-secret-change-me',
+    accessSecret: secret('JWT_ACCESS_SECRET', 'dev-only-access-secret-change-me'),
+    refreshSecret: secret('JWT_REFRESH_SECRET', 'dev-only-refresh-secret-change-me'),
     accessTtl: process.env.JWT_ACCESS_TTL ?? '15m',
     refreshTtl: process.env.JWT_REFRESH_TTL ?? '7d',
   },
 
-  auditPepper: process.env.AUDIT_PEPPER ?? 'dev-audit-pepper',
+  auditPepper: secret('AUDIT_PEPPER', 'dev-only-audit-pepper-change-me'),
 
   admin: {
     username: process.env.ADMIN_USERNAME ?? 'admin',
-    initialPassword: process.env.ADMIN_INITIAL_PASSWORD ?? '***REMOVED-BY-HISTORY-REWRITE***',
+    initialPassword: secret('ADMIN_INITIAL_PASSWORD', 'DevOnly-ChangeMe-0000!'),
   },
 
   password: {
